@@ -12,15 +12,14 @@ const GITIGNORE_COMMENT: &str = "# Claw Code local artifacts";
 const GITIGNORE_ENTRIES: [&str; 2] = [".claude/settings.local.json", ".claude/sessions/"];
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) enum InitStatus {
+pub enum InitStatus {
     Created,
     Updated,
     Skipped,
 }
 
 impl InitStatus {
-    #[must_use]
-    pub(crate) fn label(self) -> &'static str {
+    pub fn label(self) -> &'static str {
         match self {
             Self::Created => "created",
             Self::Updated => "updated",
@@ -30,20 +29,19 @@ impl InitStatus {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct InitArtifact {
-    pub(crate) name: &'static str,
-    pub(crate) status: InitStatus,
+pub struct InitArtifact {
+    pub name: &'static str,
+    pub status: InitStatus,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct InitReport {
-    pub(crate) project_root: PathBuf,
-    pub(crate) artifacts: Vec<InitArtifact>,
+pub struct InitReport {
+    pub project_root: PathBuf,
+    pub artifacts: Vec<InitArtifact>,
 }
 
 impl InitReport {
-    #[must_use]
-    pub(crate) fn render(&self) -> String {
+    pub fn render(&self) -> String {
         let mut lines = vec![
             "Init".to_string(),
             format!("  Project          {}", self.project_root.display()),
@@ -77,7 +75,7 @@ struct RepoDetection {
     rust_dir: bool,
 }
 
-pub(crate) fn initialize_repo(cwd: &Path) -> Result<InitReport, Box<dyn std::error::Error>> {
+pub fn initialize_repo(cwd: &Path) -> Result<InitReport, Box<dyn std::error::Error>> {
     let mut artifacts = Vec::new();
 
     let claude_dir = cwd.join(".claude");
